@@ -1,6 +1,6 @@
 # SPEC.md — FX-backtest 仕様書
 
-作成: 2026-05-03 | 担当: Kazuya Oza
+作成: 2026-05-03 | 更新: 2026-05-04 | 担当: Kazuya Oza
 
 ---
 
@@ -51,13 +51,25 @@ SBI証券で実行可能なFX取引手法について、長期ヒストリカル
 
 ### 3-1. 推奨データソース（優先順）
 
-| 優先度 | ソース | 期間 | 粒度 | 費用 | 取得方法 |
-|--------|--------|------|------|------|---------|
-| ⭐⭐⭐ | FRED（セントルイス連銀） | 1971〜現在（55年） | 日足 | 無料 | `fredapi` + APIキー（無料登録） |
-| ⭐⭐⭐ | Bank of Japan（日本銀行） | 1973〜現在 | 日足 | 無料 | CSV手動DL or `bojpy` |
-| ⭐⭐ | Yahoo Finance (yfinance) | 2000年頃〜現在（〜25年） | 日足〜時間足 | 無料 | `yfinance` ライブラリ |
-| ⭐⭐ | Stooq | 1980年代〜現在 | 日足 | 無料 | `pandas_datareader` |
-| ⭐ | OANDA Historical Rates | 1990〜現在 | 秒足〜月足 | 無料（要口座） | `oandapyV20` |
+> ✅ **全ソースともAPIキー不要・ユーザー手順ゼロで自動取得可能であることを実機検証済み（2026-05-04）**
+
+| 優先度 | ソース | 期間 | 粒度 | 費用 | 取得方法 | 検証状態 |
+|--------|--------|------|------|------|---------|--------|
+| ⭐⭐⭐ | FRED（セントルイス連銀） | 1971〜現在（55年） | 日足 | 無料 | `requests` + 直接CSV URL（**APIキー不要**） | ✅ 実機確認 |
+| ⭐⭐⭐ | Frankfurter API | 1999〜現在（27年） | 日足 | 無料 | `requests` REST API（**APIキー不要**） | ✅ 実機確認 |
+| ⭐⭐ | Yahoo Finance (yfinance) | 2000年頃〜現在（〜25年） | 日足〜時間足 | 無料 | `yfinance` ライブラリ（APIキー不要） | 未検証 |
+| ⭐⭐ | Stooq | 2000年代〜現在 | 日足 | 無料 | `pandas_datareader`（APIキー不要） | 未検証 |
+
+**廃止:** ~~FRED APIキー（fredapi）~~ / ~~Bank of Japan 手動DL~~ / ~~OANDA口座~~  → 全て不要
+
+**FRED 直接URL方式（実装採用）:**
+```python
+import pandas as pd, requests
+headers = {'User-Agent': 'Mozilla/5.0 (compatible; research-bot/1.0)'}
+url = f'https://fred.stlouisfed.org/graph/fredgraph.csv?id=DEXJPUS'
+df = pd.read_csv(requests.get(url, headers=headers).text, ...)
+# → USD/JPY 1971-01-04 〜 現在（14,430行）APIキー一切不要
+```
 
 ### 3-2. 使用通貨ペアと取得シリーズ
 
@@ -205,16 +217,19 @@ def worst_drawdown(equity_curve):
 ### 5-3. 主要ライブラリ
 
 ```
-fredapi>=0.5.0      # FRED APIクライアント
-yfinance>=0.2.40    # Yahoo Finance
-pandas>=2.0.0
+# APIキー不要 ✅
+requests>=2.32.0    # FRED直接URL取得（標準ライブラリで代替可）
+pandas>=2.0.0       # データ処理（既インストール確認済み）
 numpy>=1.26.0
-pandas-datareader>=0.10.0   # Stooq等
-vectorbt>=0.26.0    # 高速バックテスト（推奨）
+yfinance>=0.2.40    # Yahoo Finance（補完用）
+pandas-datareader>=0.10.0   # Frankfurter/Stooq等
 matplotlib>=3.8.0
 seaborn>=0.13.0
 ta>=0.10.0          # テクニカル指標（RSI/ATR/BB）
+vectorbt>=0.26.0    # 高速バックテスト（推奨）
 ```
+
+**Python 3.13.7 / requests 2.32.5 / pandas 2.3.2 は既インストール確認済み（2026-05-04）**
 
 ---
 
@@ -241,15 +256,14 @@ ta>=0.10.0          # テクニカル指標（RSI/ATR/BB）
 
 ## 8. フェーズ1開始前にユーザーが必要な作業
 
-1. **FRED APIキー取得**（5分）
-   - URL: https://fred.stlouisfed.org/docs/api/api_key.html
-   - 無料・即日発行
-   - 取得後 `.env` ファイルに `FRED_API_KEY=xxxxx` と記載
+✅ **ユーザー手順ゼロ** — 全データソースはAPIキー不要で自動取得可能であることを実機検証済み。
 
-2. **Python環境確認**（既存のnasdaq_backtestと共用可能）
-   ```bash
-   python --version  # 3.11以上推奨
-   pip install fredapi yfinance pandas-datareader vectorbt ta
+追加ライブラリのインストールはClaude Codeが自動で実行する。
+
+```bash
+# Claude Codeが自動実行（ユーザー操作不要）
+python --version  # 3.13.7 確認済み
+pip install yfinance pandas-datareader vectorbt ta  # requestsとpandasは既存
    ```
 
 ---

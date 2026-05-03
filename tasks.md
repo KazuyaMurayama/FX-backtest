@@ -67,11 +67,13 @@
 
 ### 新セッション開始時のプロンプト（コピペ用）
 ```
-FX-backtestリポジトリ（C:\Users\user\Desktop\FX-backtest）のフェーズ1に入ります。
+FX-backtestリポジトリ（C:\Users\user\Desktop\FX-backtest）のフェーズ1を開始します。
 tasks.md・SPEC.md・FILE_INDEX.mdを確認してから、フェーズ1タスク1-1〜1-5（環境構築・データ取得）を実行してください。
+※ FRED APIキー不要（直接URL方式で実機検証済み）。ユーザー手順ゼロで進めること。
 実行はSonnet、設計判断はOpusで進めてください。
 ```
 
 ### 現時点の懸念事項
-- FRED APIキーが未取得（無料）→ フェーズ1開始時にユーザーに取得依頼
+- ~~FRED APIキーが未取得~~ → **解消: APIキー不要で直接取得可能（2026-05-04実機検証済み）**
 - vectorbt vs backtesting.pyの選定 → SPEC.md参照（vectorbt推奨）
+- FRED直接URLはレート制限あり → リトライロジック（指数バックオフ）を data_fetcher.py に実装予定
