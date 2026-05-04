@@ -1,6 +1,6 @@
 # FILE_INDEX.md — FX-backtest ファイルインデックス
 
-最終更新: 2026-05-04
+最終更新: 2026-05-04 (フェーズ2完了)
 
 ---
 
@@ -27,8 +27,9 @@ FX-backtest/
 ├── 📂 src/
 │   ├── __init__.py         ✅ フェーズ1完了
 │   ├── data_fetcher.py     ✅ フェーズ1完了（FRED直接URL+キャッシュ+リトライ）
-│   ├── backtest_engine.py  ⬜ フェーズ2 (タスク2-1)
-│   ├── evaluation.py       ⬜ フェーズ2 (タスク2-2)
+│   ├── backtest_engine.py  ✅ フェーズ2完了（lookahead bias排除・スプレッドコスト）
+│   ├── evaluation.py       ✅ フェーズ2完了（Sharpe/CAGR/MaxDD/Calmar等）
+│   ├── test_engine.py      ✅ フェーズ2完了（6件全PASS）
 │   └── strategies/
 │       ├── __init__.py     ✅ フェーズ1完了
 │       ├── ma_crossover.py ⬜ フェーズ3 (タスク3-1)
@@ -68,15 +69,26 @@ data_fetcher.py                        ← フェーズ1完了
   ├─ FRED直接URL (requests) → data/raw/fx_*.csv
   └─ FRED直接URL (requests) → data/raw/rate_*.csv
 
-backtest_engine.py                     ← フェーズ2
-  ├─ data_fetcher.py (価格データ読込)
-  ├─ strategies/*.py (売買シグナル生成)
-  └─ evaluation.py (指標計算)
+evaluation.py                          ← フェーズ2完了
+  ├─ 入力: equity(pd.Series), returns(pd.Series), signals(pd.Series)
+  └─ 出力: {sharpe, cagr, worst_dd, calmar, win_rate, profit_factor, n_trades, ...}
 
-evaluation.py                          ← フェーズ2
-  ├─ 入力: equity_curve (pd.Series)
-  └─ 出力: {sharpe, cagr, worst_dd, ...}
+backtest_engine.py                     ← フェーズ2完了
+  ├─ evaluation.py (指標計算)
+  ├─ BacktestEngine.run(prices, signals) → BacktestResult
+  └─ run_backtest() ショートカット関数
+
+strategies/*.py                        ← フェーズ3
+  └─ 各戦略: fetch_fx() → signals生成 → run_backtest() → BacktestResult
 ```
+
+## 🏆 ベースライン結果（BnH USD/JPY 1990〜2026）
+
+| 指標 | 値 | 備考 |
+|------|---|------|
+| Sharpe | 0.078 | 戦略はこれを大きく上回ること |
+| CAGR | 0.3%/年 | 37.6年でほぼ横ばい |
+| 最悪DD | -52.6% | 単純保有は高リスク |
 
 ---
 

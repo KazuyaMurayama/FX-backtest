@@ -1,6 +1,6 @@
 # tasks.md — FX-backtest タスク管理
 
-最終更新: 2026-05-04
+最終更新: 2026-05-04 (フェーズ2完了)
 
 ---
 
@@ -29,17 +29,17 @@
 
 ---
 
-## 🔴 フェーズ2: バックテストエンジン構築（次）
+## 🟢 フェーズ2: バックテストエンジン構築（完了）
 
 | # | タスク | 担当モデル | 状態 | 備考 |
 |---|--------|----------|------|------|
-| 2-1 | `src/backtest_engine.py` 実装 | Sonnet | ⬜ 未着手 | スプレッド・スワップコスト組込み |
-| 2-2 | `src/evaluation.py` 実装 | Sonnet | ⬜ 未着手 | Sharpe/CAGR/最悪DD計算 |
-| 2-3 | エンジンの単体テスト | Sonnet | ⬜ 未着手 | ゼロ収益ケース等 |
+| 2-1 | `src/backtest_engine.py` 実装 | Sonnet | ✅ 完了 | 2026-05-04、signal.shift(1)でlookahead bias排除 |
+| 2-2 | `src/evaluation.py` 実装 | Sonnet | ✅ 完了 | 2026-05-04、Sharpe/CAGR/MaxDD/Calmar/勝率等 |
+| 2-3 | エンジンの単体テスト | Sonnet | ✅ 完了 | 2026-05-04、6件全PASS（実データ含む） |
 
 ---
 
-## 🟡 フェーズ3: 戦略実装（次セッション以降）
+## 🔴 フェーズ3: 戦略実装（次）
 
 | # | タスク | 担当モデル | 状態 | 優先度 | 備考 |
 |---|--------|----------|------|--------|------|
@@ -67,12 +67,15 @@
 
 ### 新セッション開始時のプロンプト（コピペ用）
 ```
-FX-backtestリポジトリ（C:\Users\user\Desktop\FX-backtest）のフェーズ2を開始します。
-tasks.md・SPEC.md・FILE_INDEX.mdを確認してから、フェーズ2タスク2-1〜2-3（バックテストエンジン構築）を実行してください。
+FX-backtestリポジトリ（C:\Users\user\Desktop\FX-backtest）のフェーズ3を開始します。
+tasks.md・SPEC.md・FILE_INDEX.mdを確認してから、フェーズ3タスク3-1〜3-6（6戦略の実装）を実行してください。
 実行はSonnet、設計判断はOpusで進めてください。
+※ Python実行時は必ず -X utf8 オプションを付けること（Windows cp932回避）
+※ src/ 配下で実行する際は sys.path に src を追加済み
 ```
 
-### 現時点の懸念事項
-- ~~FRED APIキーが未取得~~ → **解消: APIキー不要で直接取得可能（2026-05-04実機検証済み）**
-- vectorbt vs backtesting.pyの選定 → SPEC.md参照（vectorbt推奨）
-- FRED直接URLはレート制限あり → リトライロジック（指数バックオフ）を data_fetcher.py に実装予定
+### 現時点の懸念事項・判明した事実
+- ~~FRED APIキーが未取得~~ → 解消済み
+- ~~vectorbt選定~~ → backtest_engine.py を独自実装（vectorbtはインポート可能だが独自の方がシンプル）
+- **Windows cp932問題**: `python -X utf8` フラグ必須（日本語・記号の表示）
+- **BnH USD/JPY は CAGR 0.3%/最悪DD -52.6%**: 単純保有は戦略として機能しない（フェーズ3の戦略評価基準として重要）
