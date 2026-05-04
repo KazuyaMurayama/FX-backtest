@@ -1,0 +1,22 @@
+# FX-backtest — 依存ライブラリ
+# Python 3.13.7 で動作確認済み（2026-05-04）
+# インストール: pip install -r requirements.txt
+
+# データ取得（全てAPIキー不要）
+requests>=2.32.0        # FRED直接URL取得 ✅ 既インストール済み
+yfinance>=1.3.0         # Yahoo Finance（補完用）
+pandas-datareader>=0.10.0  # Frankfurter/Stooq等
+
+# データ処理
+pandas>=2.3.0           # ✅ 既インストール済み
+numpy>=2.3.0            # ✅ 既インストール済み
+
+# テクニカル指標（RSI/ATR/BB/ADX）
+ta>=0.11.0
+
+# バックテスト
+vectorbt>=1.0.0
+
+# 可視化
+matplotlib>=3.10.0      # ✅ 既インストール済み
+seaborn>=0.13.0         # ✅ 既インストール済み

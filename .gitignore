@@ -1,0 +1,9 @@
+data/raw/
+__pycache__/
+*.pyc
+*.pyo
+.env
+*.egg-info/
+.pytest_cache/
+results/charts/
+notebooks/.ipynb_checkpoints/
