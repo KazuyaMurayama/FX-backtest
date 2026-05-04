@@ -5,5 +5,5 @@ __pycache__/
 .env
 *.egg-info/
 .pytest_cache/
-results/charts/
+# results/charts/ — チャートはコミット対象
 notebooks/.ipynb_checkpoints/

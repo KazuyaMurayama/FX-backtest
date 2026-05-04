@@ -1,6 +1,6 @@
 # FILE_INDEX.md — FX-backtest ファイルインデックス
 
-最終更新: 2026-05-04 (フェーズ2完了)
+最終更新: 2026-05-04 (フェーズ4完了)
 
 ---
 
@@ -9,6 +9,7 @@
 | ファイル | 用途 | 最終更新 |
 |--------|------|---------|
 | [tasks.md](tasks.md) | タスク進捗・未完了一覧 | 2026-05-04 |
+| [REPORT.md](REPORT.md) | 総合分析レポート（最終成果物） | 2026-05-04 |
 | [SPEC.md](SPEC.md) | システム仕様・設計方針 | 2026-05-04 |
 | [CLAUDE.md](CLAUDE.md) | プロジェクトルール | 2026-05-03 |
 
@@ -32,12 +33,12 @@ FX-backtest/
 │   ├── test_engine.py      ✅ フェーズ2完了（6件全PASS）
 │   └── strategies/
 │       ├── __init__.py     ✅ フェーズ1完了
-│       ├── ma_crossover.py ⬜ フェーズ3 (タスク3-1)
-│       ├── atr_breakout.py ⬜ フェーズ3 (タスク3-2)
-│       ├── carry_trade.py  ⬜ フェーズ3 (タスク3-3)
-│       ├── rsi_reversal.py ⬜ フェーズ3 (タスク3-4)
-│       ├── bollinger_band.py ⬜ フェーズ3 (タスク3-5)
-│       └── dca.py          ⬜ フェーズ3 (タスク3-6)
+│       ├── ma_crossover.py ✅ フェーズ3完了 (Sharpe 0.162)
+│       ├── atr_breakout.py ✅ フェーズ3完了 (Sharpe 0.345 最優秀)
+│       ├── carry_trade.py  ✅ フェーズ3完了 (USDJPY:-0.526 / AUDUSD:0.234)
+│       ├── rsi_reversal.py ✅ フェーズ3完了 (Sharpe -0.108)
+│       ├── bollinger_band.py ✅ フェーズ3完了 (Sharpe -0.343)
+│       └── dca.py          ✅ フェーズ3完了 (Sharpe 0.145)
 ├── 📂 data/
 │   └── raw/                ✅ キャッシュ保存済み（gitignore対象）
 │       ├── fx_USDJPY.csv   (14,430行 / 1971〜2026)
@@ -54,10 +55,13 @@ FX-backtest/
 │       ├── rate_GBP_BOE.csv      (7,409行 / 1997〜)
 │       └── rate_NZD_RBNZ.csv     (480行 / 1985〜)
 ├── 📂 results/
-│   ├── charts/             ⬜ フェーズ4
-│   └── summary.csv         ⬜ フェーズ4
-└── 📂 notebooks/
-    └── analysis.ipynb      ⬜ フェーズ4
+│   ├── charts/             ✅ フェーズ4完了
+│   │   ├── 01_equity_curves.png  (全戦略エクイティカーブ)
+│   │   ├── 02_drawdowns.png      (ドローダウン比較)
+│   │   ├── 03_metrics_bar.png    (Sharpe/CAGR/MaxDD棒グラフ)
+│   │   └── 04_top3_detail.png    (上位3戦略詳細)
+│   └── summary.csv         ✅ フェーズ4完了 (9戦略全指標)
+└── 📄 REPORT.md            ✅ フェーズ4完了 (総合分析レポート)
 ```
 
 ---
