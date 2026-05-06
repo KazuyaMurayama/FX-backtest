@@ -31,6 +31,15 @@ SPREAD_ABS: dict[str, float] = {
     "NZDUSD": 0.00008,   # 0.8pips
     "USDCHF": 0.00006,   # 0.6pips
     "USDCAD": 0.00010,   # 1.0pips
+    # クロス円ペア（SBI証券FXα スプレッド実績値）
+    "EURJPY": 0.005,     # 0.5銭
+    "GBPJPY": 0.009,     # 0.9銭
+    "AUDJPY": 0.005,     # 0.5銭
+    "NZDJPY": 0.012,     # 1.2銭
+    "CHFJPY": 0.018,     # 1.8銭
+    "CADJPY": 0.017,     # 1.7銭
+    "MXNJPY": 0.003,     # 0.3銭（SBI証券最狭水準）
+    "ZARJPY": 0.009,     # 0.9銭
 }
 SPREAD_DEFAULT = 0.00008   # 未登録ペアのデフォルト
 
