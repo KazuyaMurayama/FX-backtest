@@ -103,6 +103,16 @@ SBI証券FXを対象に代表的戦略のバックテストを行い、Sharpe/CA
 - レポート・成果物MDの新規作成／更新時は `.claude/visual-rules.md` を読み、図の種類判定（§2）と Mermaid 最適化（§3）を毎回適用する。
 - 適用対象: `## ` 見出しが2つ以上ある構造化MD（README・調査メモ・設計書・PR説明など）。
 
+<!-- SKILLS_RULES_START -->
+## Skill 起動ルール（v1.0 / 2026-05-27）
+- **時系列・トレンド分析** → `time-series-analysis`
+- **A/B テスト・戦略比較の統計検定** → `ab-test-analysis`
+- **新戦略/新指標の先行研究調査** → `research-deep`
+- **大規模 sweep/grid 計画時** → `sp-writing-plans` でフェーズ分割
+- **比較レポートの図表** → `mermaid-agents365`
+- **コード変更後（プロダクション影響あり）** → `code-review` 必須
+<!-- SKILLS_RULES_END -->
+
 <!-- GLOBAL_RULES_END -->
 
 ## 🚀 自動実行ポリシー
